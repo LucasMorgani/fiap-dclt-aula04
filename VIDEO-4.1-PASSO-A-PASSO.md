@@ -180,31 +180,73 @@ argocd account update-password
 
 ## 📁 Parte 3: Preparar GitOps Repository
 
-### Passo 7: Ver Estrutura do GitOps Repo
+### Passo 7: Entender Estrutura do GitOps Repo
 
 ```bash
-cd ~/fiap-cicd-handson/aula-04
+cd fiap-dclt-aula04
 
-# Ver estrutura
+# Ver estrutura completa
 tree gitops-repo/
 ```
 
-**Estrutura:**
+**Estrutura Completa:**
 ```
 gitops-repo/
-├── applications/
-│   └── fiap-todo-api/
-│       ├── base/
-│       │   ├── deployment.yaml
-│       │   ├── service.yaml
-│       │   └── kustomization.yaml
-│       └── overlays/
-│           └── production/
-│               ├── kustomization.yaml
-│               └── deployment-patch.yaml
-└── applications/
-    └── fiap-todo-api-app.yaml  # ArgoCD Application
+├── README.md                                    # Documentação do repositório
+│
+├── applications/                                # 📁 Definições de Aplicações
+│   ├── fiap-todo-api/                          # Aplicação Todo API
+│   │   ├── base/                               # 🔷 Manifests Base (comum a todos ambientes)
+│   │   │   ├── deployment.yaml                 #    - Deployment da aplicação
+│   │   │   ├── service.yaml                    #    - Service (ClusterIP)
+│   │   │   └── kustomization.yaml              #    - Kustomize base config
+│   │   │
+│   │   └── overlays/                           # 🔶 Overlays (específico por ambiente)
+│   │       └── production/                     #    - Ambiente de Produção
+│   │           ├── kustomization.yaml          #      - Kustomize overlay config
+│   │           └── deployment-patch.yaml       #      - Patches (replicas, resources, etc)
+│   │
+│   └── fiap-todo-api-app.yaml                  # 🎯 ArgoCD Application (define deploy)
+│
+└── clusters/                                    # 📁 Configurações FluxCD por Cluster
+    └── production/                              # Cluster de Produção
+        ├── fiap-todo-api-source.yaml           #    - GitRepository (source)
+        └── fiap-todo-api-kustomization.yaml    #    - Kustomization (deploy)
 ```
+
+**📖 Explicação da Estrutura:**
+
+**1. `applications/fiap-todo-api/base/`** - Manifests Base
+   - Contém os recursos Kubernetes **comuns a todos os ambientes**
+   - `deployment.yaml`: Define pods, containers, imagem
+   - `service.yaml`: Expõe a aplicação internamente
+   - `kustomization.yaml`: Lista os recursos base
+
+**2. `applications/fiap-todo-api/overlays/production/`** - Overlay de Produção
+   - **Customiza** os manifests base para produção
+   - `deployment-patch.yaml`: Altera replicas, resources, labels
+   - `kustomization.yaml`: Referencia base + aplica patches
+   - **Vantagem**: Mesma base, configurações diferentes por ambiente
+
+**3. `applications/fiap-todo-api-app.yaml`** - ArgoCD Application
+   - Define **como o ArgoCD** deve fazer deploy
+   - Aponta para: Git repo + path dos manifests
+   - Configura: auto-sync, self-healing, namespace destino
+
+**4. `clusters/production/`** - Configurações FluxCD
+   - Alternativa ao ArgoCD (mesmo propósito)
+   - `*-source.yaml`: Define repositório Git
+   - `*-kustomization.yaml`: Define como aplicar manifests
+
+**🎯 Padrão Kustomize:**
+```
+Base (comum) + Overlay (específico) = Manifests Finais
+```
+
+**Exemplo:**
+- **Base**: 2 replicas, 128Mi RAM
+- **Overlay Production**: 5 replicas, 512Mi RAM
+- **Resultado**: Deploy com 5 replicas e 512Mi RAM
 
 ### Passo 8: Ver Manifests Base
 
@@ -241,9 +283,9 @@ spec:
   project: default
   
   source:
-    repoURL: https://github.com/SEU_USUARIO/fiap-cicd-handson
-    targetRevision: main
-    path: aula-04/gitops-repo/applications/fiap-todo-api/overlays/production
+    repoURL: https://github.com/josenetoo/fiap-dclt-aula04
+    targetRevision: HEAD
+    path: gitops-repo/applications/fiap-todo-api/overlays/production
   
   destination:
     server: https://kubernetes.default.svc

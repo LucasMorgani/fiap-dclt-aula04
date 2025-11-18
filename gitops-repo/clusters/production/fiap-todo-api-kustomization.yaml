@@ -24,7 +24,7 @@ spec:
   # ============================================
   # PATH
   # ============================================
-  path: "./applications/fiap-todo-api/overlays/production"  # Path dos manifests no repo
+  path: "./gitops-repo/applications/fiap-todo-api/overlays/production"  # Path dos manifests no repo
   
   # ============================================
   # PRUNE

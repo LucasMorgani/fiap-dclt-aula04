@@ -30,7 +30,7 @@ spec:
   # ============================================
   # URL
   # ============================================
-  url: https://github.com/YOUR-ORG/fiap-gitops-repo  # URL do repositório Git
+  url: https://github.com/josenetoo/fiap-dclt-aula04  # URL do repositório Git
   
   # ============================================
   # SECRET REF

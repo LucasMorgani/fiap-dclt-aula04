@@ -33,7 +33,7 @@ argocd app sync fiap-todo-api
 ### FluxCD
 ```bash
 # Bootstrap
-flux bootstrap github --owner=YOUR-ORG --repository=fiap-gitops-repo
+flux bootstrap github --owner=josenetoo --repository=fiap-dclt-aula04 --path=gitops-repo/clusters/production
 
 # Aplicar configurações
 kubectl apply -f clusters/production/

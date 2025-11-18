@@ -165,14 +165,14 @@ metadata:
   namespace: flux-system
 spec:
   interval: 1m
-  url: https://github.com/SEU_USUARIO/fiap-cicd-handson
+  url: https://github.com/josenetoo/fiap-dclt-aula04
   ref:
     branch: main
   ignore: |
     # exclude all
     /*
     # include only specific path
-    !/aula-04/gitops-repo/applications/fiap-todo-api/
+    !/gitops-repo/applications/fiap-todo-api/
 ```
 
 ### Passo 8: Ver Kustomization
@@ -194,7 +194,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: fiap-todo-api
-  path: ./aula-04/gitops-repo/applications/fiap-todo-api/overlays/production
+  path: ./gitops-repo/applications/fiap-todo-api/overlays/production
   prune: true
   targetNamespace: fiap-todo-flux
   healthChecks:

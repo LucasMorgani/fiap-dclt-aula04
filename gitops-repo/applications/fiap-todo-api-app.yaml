@@ -35,9 +35,9 @@ spec:
   # ============================================
   # Define de onde vêm os manifests
   source:
-    repoURL: https://github.com/YOUR-ORG/fiap-gitops-repo  # URL do repositório Git
+    repoURL: https://github.com/josenetoo/fiap-dclt-aula04  # URL do repositório Git
     targetRevision: HEAD                 # Branch/tag/commit (HEAD = última versão da branch)
-    path: applications/fiap-todo-api/overlays/production   # Path dos manifests no repo
+    path: gitops-repo/applications/fiap-todo-api/overlays/production   # Path dos manifests no repo
   
   # ============================================
   # DESTINATION (Kubernetes Cluster)
