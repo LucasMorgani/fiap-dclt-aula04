@@ -333,15 +333,20 @@ kustomize version
 # Atualizar kustomization.yaml com a imagem real
 cd gitops-repo/applications/fiap-todo-api/overlays/production
 
-# Editar com kustomize
+# Verificar se ECR_URI está definido
+echo "ECR URI: ${ECR_URI}"
+
+# Editar com kustomize (substitui a imagem)
 kustomize edit set image fiap-todo-api=${ECR_URI}/fiap-todo-api:v1.0.0
 
 # Ver mudança
 cat kustomization.yaml
 
 # Voltar para o diretório raiz
-cd ../../../../
+cd ../../../../../
 ```
+
+**⚠️ IMPORTANTE**: Verifique se a seção `images` no `kustomization.yaml` contém a URI real do ECR (não `YOUR_ECR_URI`).
 
 **Resultado esperado em `kustomization.yaml`:**
 ```yaml
