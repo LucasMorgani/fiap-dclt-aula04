@@ -27,11 +27,21 @@ git clone https://github.com/SEU_USUARIO/fiap-dclt-aula04.git
 cd fiap-dclt-aula04
 ```
 
-### 2. Configurar Cluster EKS
+### 2. Pré-requisito: Cluster EKS
 
-**IMPORTANTE**: Configure o cluster EKS antes de iniciar os vídeos.
+**⚠️ IMPORTANTE**: O cluster EKS `cicd-lab` deve ter sido criado na **Aula 01**.
 
-- [SETUP-EKS-CLUSTER.md](SETUP-EKS-CLUSTER.md) - Setup completo do cluster EKS (compatível com AWS Learner Lab)
+Se você ainda não criou o cluster:
+1. Volte ao **repositório da Aula 01**
+2. Siga os passos de criação do cluster EKS
+3. O cluster deve ter o nome: `cicd-lab`
+4. Região: `us-east-1`
+5. Profile AWS: `fiapaws`
+
+**Verificar se o cluster existe:**
+```bash
+aws eks describe-cluster --name cicd-lab --region us-east-1 --profile fiapaws
+```
 
 ### 3. Seguir Vídeos em Ordem
 
@@ -43,19 +53,23 @@ cd fiap-dclt-aula04
 
 ```
 aula-04/
-├── SETUP-EKS-CLUSTER.md               # Setup cluster EKS (AWS Learner Lab)
+├── README.md                          # Este arquivo
 ├── VIDEO-4.1-PASSO-A-PASSO.md         # Vídeo 1: GitOps com ArgoCD
 ├── VIDEO-4.2-PASSO-A-PASSO.md         # Vídeo 2: Pipeline GitOps
 ├── VIDEO-4.3-PASSO-A-PASSO.md         # Vídeo 3: FluxCD
+├── .github/workflows/                 # GitHub Actions
+│   ├── docker-build.yml               # Build e push de imagens
+│   ├── update-image.yml               # Update de manifests
+│   └── argocd-sync.yml                # Sync com ArgoCD
 ├── gitops-repo/                       # Repositório GitOps
 │   ├── applications/                  # Definições de aplicações
 │   │   ├── fiap-todo-api/            # Manifests da aplicação
-│   │   │   ├── base/                 # Manifests base
+│   │   │   ├── base/                 # Manifests base (comum)
 │   │   │   └── overlays/             # Overlays por ambiente
 │   │   └── fiap-todo-api-app.yaml    # ArgoCD Application
 │   └── clusters/                      # Configurações FluxCD
 │       └── production/                # Cluster de produção
-└── README.md
+└── app/                               # Código da aplicação
 ```
 
 ## ✅ Checklist de Aprendizado

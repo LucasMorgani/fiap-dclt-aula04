@@ -45,68 +45,22 @@ graph TB
 
 ## ⚙️ Parte 2: Setup ArgoCD
 
-### Passo 2: Criar Cluster EKS
+### Passo 2: Verificar Cluster EKS
+
+**⚠️ PRÉ-REQUISITO IMPORTANTE:**
+
+O cluster EKS `cicd-lab` deve ter sido criado na **Aula 01**. Se você ainda não criou o cluster, **volte para o repositório da Aula 01** e siga os passos de criação do cluster EKS.
+
+**Repositório Aula 01**: [Link para repositório da Aula 01]
 
 ```bash
-# Verificar credenciais AWS
-aws sts get-caller-identity --profile fiapaws
-
-# Obter Account ID
-ACCOUNT_ID=$(aws sts get-caller-identity --profile fiapaws --query Account --output text)
-
-# Discovery automático de subnets (excluindo us-east-1e)
-SUBNET_IDS=$(aws ec2 describe-subnets \
-  --profile fiapaws \
-  --region us-east-1 \
-  --filters "Name=map-public-ip-on-launch,Values=true" \
-  --query 'Subnets[?AvailabilityZone!=`us-east-1e`].SubnetId' \
-  --output text | tr '\t' ',')
-
-echo "Subnets descobertas: $SUBNET_IDS"
-
-# Criar cluster EKS
-aws eks create-cluster \
-  --name cicd-lab \
-  --region us-east-1 \
-  --role-arn arn:aws:iam::${ACCOUNT_ID}:role/LabRole \
-  --resources-vpc-config subnetIds=${SUBNET_IDS} \
-  --profile fiapaws
-
-# Aguardar cluster ficar ativo (15-20 minutos)
-echo "⏳ Aguardando cluster ficar ativo..."
-aws eks wait cluster-active \
+# Verificar se o cluster existe
+aws eks describe-cluster \
   --name cicd-lab \
   --region us-east-1 \
   --profile fiapaws
 
-# Discovery de subnets para node group
-SUBNET_IDS_SPACE=$(aws ec2 describe-subnets \
-  --profile fiapaws \
-  --region us-east-1 \
-  --filters "Name=map-public-ip-on-launch,Values=true" \
-  --query 'Subnets[?AvailabilityZone!=`us-east-1e`].SubnetId' \
-  --output text)
-
-# Criar node group
-aws eks create-nodegroup \
-  --cluster-name cicd-lab \
-  --nodegroup-name workers \
-  --node-role arn:aws:iam::${ACCOUNT_ID}:role/LabRole \
-  --subnets $SUBNET_IDS_SPACE \
-  --instance-types t3.medium \
-  --scaling-config minSize=2,maxSize=2,desiredSize=2 \
-  --region us-east-1 \
-  --profile fiapaws
-
-# Aguardar node group ficar ativo
-echo "⏳ Aguardando node group ficar ativo..."
-aws eks wait nodegroup-active \
-  --cluster-name cicd-lab \
-  --nodegroup-name workers \
-  --region us-east-1 \
-  --profile fiapaws
-
-# Configurar kubectl
+# Configurar kubectl (caso ainda não tenha configurado)
 aws eks update-kubeconfig \
   --name cicd-lab \
   --region us-east-1 \
@@ -114,7 +68,24 @@ aws eks update-kubeconfig \
 
 # Verificar nodes
 kubectl get nodes
+
+# Verificar contexto atual
+kubectl config current-context
 ```
+
+**Resultado esperado:**
+```
+NAME                                          STATUS   ROLES    AGE   VERSION
+ip-10-0-1-123.us-east-1.compute.internal     Ready    <none>   1d    v1.28.x
+ip-10-0-2-456.us-east-1.compute.internal     Ready    <none>   1d    v1.28.x
+```
+
+**⚠️ Se o cluster não existir:**
+- Retorne ao repositório da **Aula 01**
+- Siga os passos de criação do cluster EKS
+- O cluster deve ter o nome: `cicd-lab`
+- Região: `us-east-1`
+- Profile AWS: `fiapaws`
 
 ### Passo 3: Instalar ArgoCD
 

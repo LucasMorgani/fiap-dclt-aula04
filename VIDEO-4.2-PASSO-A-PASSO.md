@@ -9,11 +9,14 @@
 ## ⚠️ Pré-requisitos
 
 **IMPORTANTE**: Este vídeo assume que você já tem:
-- ✅ Cluster EKS `cicd-lab` criado (Vídeo 4.1 - Passo 2)
+- ✅ Cluster EKS `cicd-lab` criado na **Aula 01** (repositório da Aula 01)
 - ✅ ArgoCD instalado e configurado (Vídeo 4.1)
 - ✅ kubectl configurado com acesso ao cluster
 
-Se ainda não criou o cluster, volte ao **Vídeo 4.1 - Passo 2**.
+**Se ainda não criou o cluster:**
+- Volte ao **repositório da Aula 01** e crie o cluster EKS
+- O cluster deve ter o nome: `cicd-lab`
+- Depois retorne ao **Vídeo 4.1** para instalar o ArgoCD
 
 ---
 
