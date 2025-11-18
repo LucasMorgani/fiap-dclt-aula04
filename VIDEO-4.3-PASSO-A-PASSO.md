@@ -72,15 +72,52 @@ graph TB
 
 ### Passo 2: Instalar Flux CLI
 
+**macOS:**
 ```bash
-# macOS
+# Opção 1: Homebrew (recomendado)
 brew install fluxcd/tap/flux
 
-# Linux
+# Opção 2: Download direto
 curl -s https://fluxcd.io/install.sh | sudo bash
 
-# Verificar
+# Verificar instalação
 flux --version
+```
+
+**Linux:**
+```bash
+# Opção 1: Script de instalação (recomendado)
+curl -s https://fluxcd.io/install.sh | sudo bash
+
+# Opção 2: Download manual
+curl -LO https://github.com/fluxcd/flux2/releases/latest/download/flux_$(uname -s)_$(uname -m).tar.gz
+tar -xzf flux_*.tar.gz
+sudo mv flux /usr/local/bin/
+rm flux_*.tar.gz
+
+# Verificar instalação
+flux --version
+```
+
+**Windows (PowerShell):**
+```powershell
+# Opção 1: Chocolatey
+choco install flux
+
+# Opção 2: Download manual
+# 1. Baixar de: https://github.com/fluxcd/flux2/releases/latest
+# 2. Extrair flux.exe
+# 3. Mover para C:\Program Files\flux\
+# 4. Adicionar ao PATH
+
+# Verificar instalação
+flux --version
+```
+
+**Verificar instalação (todos os sistemas):**
+```bash
+flux --version
+# Deve mostrar: flux version 2.x.x
 ```
 
 ### Passo 3: Verificar Cluster
@@ -96,6 +133,15 @@ flux check --pre
 
 ### Passo 4: Bootstrap FluxCD
 
+**⚠️ Pré-requisito**: Você precisa de um Personal Access Token do GitHub com permissões `repo`.
+
+**Criar token GitHub:**
+1. Acesse: https://github.com/settings/tokens
+2. **Generate new token** → **Classic**
+3. Selecione: `repo` (todas as permissões)
+4. **Generate token** e copie o token
+
+**Linux / macOS:**
 ```bash
 # Exportar token GitHub
 export GITHUB_TOKEN=<seu_token>
@@ -106,7 +152,7 @@ flux bootstrap github \
   --owner=$GITHUB_USER \
   --repository=fiap-dclt-aula04 \
   --branch=main \
-  --path=aula-04/flux-system \
+  --path=flux-system \
   --personal
 
 # Flux vai:
@@ -114,6 +160,21 @@ flux bootstrap github \
 # 2. Instalar componentes Flux
 # 3. Criar manifests no Git
 # 4. Configurar sync automático
+```
+
+**Windows (PowerShell):**
+```powershell
+# Definir variáveis
+$env:GITHUB_TOKEN = "<seu_token>"
+$env:GITHUB_USER = "<seu_usuario>"
+
+# Bootstrap Flux
+flux bootstrap github `
+  --owner=$env:GITHUB_USER `
+  --repository=fiap-dclt-aula04 `
+  --branch=main `
+  --path=flux-system `
+  --personal
 ```
 
 ### Passo 5: Verificar Instalação
