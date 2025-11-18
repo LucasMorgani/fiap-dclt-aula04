@@ -465,7 +465,7 @@ kubectl get pods -n flux-system | grep image
 
 ```bash
 cat > gitops-repo/clusters/production/fiap-todo-api-imagerepository.yaml << 'EOF'
-apiVersion: image.toolkit.fluxcd.io/v1beta2
+apiVersion: image.toolkit.fluxcd.io/v1
 kind: ImageRepository
 metadata:
   name: fiap-todo-api
@@ -486,7 +486,7 @@ EOF
 
 ```bash
 cat > gitops-repo/clusters/production/fiap-todo-api-imagepolicy.yaml << 'EOF'
-apiVersion: image.toolkit.fluxcd.io/v1beta2
+apiVersion: image.toolkit.fluxcd.io/v1
 kind: ImagePolicy
 metadata:
   name: fiap-todo-api
@@ -515,7 +515,7 @@ echo "✅ ImagePolicy criado!"
 
 ```bash
 cat > gitops-repo/clusters/production/fiap-todo-api-imageupdateautomation.yaml << 'EOF'
-apiVersion: image.toolkit.fluxcd.io/v1beta1
+apiVersion: image.toolkit.fluxcd.io/v1beta2
 kind: ImageUpdateAutomation
 metadata:
   name: fiap-todo-api

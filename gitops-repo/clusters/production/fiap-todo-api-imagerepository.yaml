@@ -1,0 +1,10 @@
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImageRepository
+metadata:
+  name: fiap-todo-api
+  namespace: flux-system
+spec:
+  image: 123456789012.dkr.ecr.us-east-1.amazonaws.com/fiap-todo-api
+  interval: 1m                    # Verifica ECR a cada 1 minuto
+  secretRef:
+    name: ecr-credentials         # Credenciais AWS (criar depois)
