@@ -15,4 +15,4 @@ commonLabels:
 images:
 - name: fiap-todo-api
   newName: YOUR_ECR_URI/fiap-todo-api
-  newTag: 21031e35dfd315ddccc5572e386b02edcb2b451a
+  newTag: v1.6
