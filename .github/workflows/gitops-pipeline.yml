@@ -2,8 +2,9 @@ name: 🚀 GitOps Pipeline - Build, Update & Sync
 
 on:
   push:
-    branches: [ main ]
-    paths: 
+    branches:
+      - main
+    paths:
       - 'app/**'
   workflow_dispatch:
 
