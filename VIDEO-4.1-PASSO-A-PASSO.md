@@ -258,17 +258,20 @@ echo "ECR URI: $ECR_URI"
 **⚠️ Nota Pedagógica:**
 - Neste vídeo, faremos o build **manualmente** para entender o processo
 - No **Vídeo 4.2**, automatizaremos isso com GitHub Actions
+- Usaremos a aplicação da **Aula 03** (fiap-todo-api)
+
+**Opção 1: Usar aplicação da Aula 03 (Recomendado)**
 
 ```bash
+# Navegar para o repositório da Aula 03
+cd ../fiap-dclt-aula03  # ou o caminho onde está a Aula 03
+
 # Login no ECR
 aws ecr get-login-password \
   --region us-east-1 \
   --profile fiapaws | docker login \
   --username AWS \
   --password-stdin ${ECR_URI}
-
-# Navegar para o diretório da aplicação
-cd app/
 
 # Build da imagem
 docker build -t fiap-todo-api:v1.0.0 .
@@ -281,8 +284,33 @@ docker push ${ECR_URI}/fiap-todo-api:v1.0.0
 
 echo "✅ Imagem publicada: ${ECR_URI}/fiap-todo-api:v1.0.0"
 
-# Voltar para o diretório raiz
-cd ..
+# Voltar para o diretório da Aula 04
+cd ../fiap-dclt-aula04
+```
+
+**Opção 2: Usar imagem pública de exemplo (Alternativa rápida)**
+
+Se você não tem a Aula 03 disponível, pode usar uma imagem de exemplo:
+
+```bash
+# Fazer pull de uma imagem de exemplo
+docker pull nginx:alpine
+
+# Tag para o ECR
+docker tag nginx:alpine ${ECR_URI}/fiap-todo-api:v1.0.0
+
+# Login no ECR
+aws ecr get-login-password \
+  --region us-east-1 \
+  --profile fiapaws | docker login \
+  --username AWS \
+  --password-stdin ${ECR_URI}
+
+# Push para o ECR
+docker push ${ECR_URI}/fiap-todo-api:v1.0.0
+
+echo "✅ Imagem publicada: ${ECR_URI}/fiap-todo-api:v1.0.0"
+echo "⚠️ Usando nginx:alpine como exemplo"
 ```
 
 ### Passo 11: Atualizar Manifests com a Imagem

@@ -27,9 +27,12 @@ git clone https://github.com/SEU_USUARIO/fiap-dclt-aula04.git
 cd fiap-dclt-aula04
 ```
 
-### 2. Pré-requisito: Cluster EKS
+### 2. Pré-requisitos
 
-**⚠️ IMPORTANTE**: O cluster EKS `cicd-lab` deve ter sido criado na **Aula 01**.
+**⚠️ IMPORTANTE**: Esta aula depende de aulas anteriores:
+
+#### 📦 Cluster EKS (Aula 01)
+O cluster EKS `cicd-lab` deve ter sido criado na **Aula 01**.
 
 Se você ainda não criou o cluster:
 1. Volte ao **repositório da Aula 01**
@@ -42,6 +45,12 @@ Se você ainda não criou o cluster:
 ```bash
 aws eks describe-cluster --name cicd-lab --region us-east-1 --profile fiapaws
 ```
+
+#### 🐳 Aplicação Docker (Aula 03)
+Para o build manual da imagem (Vídeo 4.1), você precisará da aplicação da **Aula 03**.
+
+- Tenha o repositório da **Aula 03** clonado no mesmo diretório pai
+- Ou use a Opção 2 (imagem de exemplo) descrita no Vídeo 4.1
 
 ### 3. Seguir Vídeos em Ordem
 
@@ -61,15 +70,16 @@ aula-04/
 │   ├── docker-build.yml               # Build e push de imagens
 │   ├── update-image.yml               # Update de manifests
 │   └── argocd-sync.yml                # Sync com ArgoCD
-├── gitops-repo/                       # Repositório GitOps
-│   ├── applications/                  # Definições de aplicações
-│   │   ├── fiap-todo-api/            # Manifests da aplicação
-│   │   │   ├── base/                 # Manifests base (comum)
-│   │   │   └── overlays/             # Overlays por ambiente
-│   │   └── fiap-todo-api-app.yaml    # ArgoCD Application
-│   └── clusters/                      # Configurações FluxCD
-│       └── production/                # Cluster de produção
-└── app/                               # Código da aplicação
+└── gitops-repo/                       # Repositório GitOps
+    ├── applications/                  # Definições de aplicações
+    │   ├── fiap-todo-api/            # Manifests da aplicação
+    │   │   ├── base/                 # Manifests base (comum)
+    │   │   └── overlays/             # Overlays por ambiente
+    │   └── fiap-todo-api-app.yaml    # ArgoCD Application
+    └── clusters/                      # Configurações FluxCD
+        └── production/                # Cluster de produção
+
+Nota: O código da aplicação está no repositório da Aula 03
 ```
 
 ## ✅ Checklist de Aprendizado
